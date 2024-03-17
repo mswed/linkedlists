@@ -35,7 +35,9 @@ class LinkedList {
   }
 
   invalidIndex(idx) {
-    if (idx < 0 || idx >= this.length) throw 'Invalid Index';
+    console.log('index is', idx)
+    console.log('length is', this.length)
+    if (idx < 0 || idx > this.length -1) throw 'Invalid Index';
   }
   push(val) {
     const newNode = new Node(val);
@@ -148,12 +150,69 @@ class LinkedList {
   /** insertAt(idx, val): add node w/val before idx. */
 
   insertAt(idx, val) {
+    console.log('It is a valid index')
+    // We are adding at the start of the list
+    if (idx === 0 || this.head === null) {
+      console.log('This is insert at 0 or into an empty list')
+      this.unshift(val)
+      return
+    }
+
+    this.invalidIndex(idx)
+
+    // We are adding at the end of the list
+    if (idx === this.length - 1) {
+      this.push(val)
+      return
+    }
+    let newNode = new Node(val)
+    let currentNode = this.head;
+    let previousNode = null;
+    for (let i = 0; i < this.length; i++) {
+      if (i === idx) {
+        previousNode.next = newNode;
+        newNode.next = currentNode
+        this.length += 1;
+        return
+      }
+      previousNode = currentNode;
+      currentNode = currentNode.next;
+    }
 
   }
 
   /** removeAt(idx): return & remove item at idx, */
 
   removeAt(idx) {
+
+    this.invalidIndex(idx)
+    // The list is empty
+    this.isEmpty()
+
+    // We are removing from the start of the list
+    if (idx === 0) {
+      this.shift()
+      return
+    }
+
+    // We are adding at the end of the list
+    if (idx === this.length - 1) {
+      this.pop()
+      return
+    }
+
+    let currentNode = this.head;
+    let previousNode = null;
+    for (let i = 0; i < this.length; i++) {
+      if (i === idx) {
+        previousNode.next = currentNode.next;
+        currentNode.next = null;
+        this.length -= 1;
+        return currentNode.val
+      }
+      previousNode = currentNode;
+      currentNode = currentNode.next;
+    }
 
   }
 
