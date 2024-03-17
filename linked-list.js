@@ -47,6 +47,25 @@ class LinkedList {
 
   pop() {
 
+    if (this.head === null) throw 'The list is empty!';
+    const tail = this.tail;
+
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      let currentNode = this.head;
+      while (currentNode.next.next) {
+        currentNode = currentNode.next;
+      }
+      this.tail = currentNode;
+      this.tail.next = null;
+    }
+
+    this.length -= 1
+
+    return tail.val;
+
   }
 
   /** shift(): return & remove first item. */
@@ -86,5 +105,5 @@ class LinkedList {
   }
 }
 
-const trains = new LinkedList()
+const trains = new LinkedList(['Engine', 'Passenger Car 1', 'Passenger Car 2', 'Caboose'])
 //module.exports = LinkedList;
