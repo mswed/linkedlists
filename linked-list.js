@@ -150,10 +150,8 @@ class LinkedList {
   /** insertAt(idx, val): add node w/val before idx. */
 
   insertAt(idx, val) {
-    console.log('It is a valid index')
     // We are adding at the start of the list
     if (idx === 0 || this.head === null) {
-      console.log('This is insert at 0 or into an empty list')
       this.unshift(val)
       return
     }
@@ -219,7 +217,16 @@ class LinkedList {
   /** average(): return an average of all values in the list */
 
   average() {
-    
+    if (this.head === null) return 0;
+
+    let total = 0;
+    let currentNode = this.head;
+    for (let i = 0; i < this.length; i++) {
+      total += currentNode.val;
+      currentNode = currentNode.next;
+    }
+
+    return total / this.length
   }
 }
 
