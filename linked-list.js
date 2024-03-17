@@ -71,6 +71,26 @@ class LinkedList {
   /** shift(): return & remove first item. */
 
   shift() {
+    // The list is empty
+    if (this.head === null) throw 'The list is empty!';
+
+    // The list has only one item in it
+    const oldHead = this.head;
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      // Replace the head
+
+      const newHead = this.head.next;
+      this.head.next = null;
+      this.head = newHead;
+    }
+    this.length -= 1;
+    return oldHead.val;
+
+
+
 
   }
 
