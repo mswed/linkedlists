@@ -34,6 +34,9 @@ class LinkedList {
     return false;
   }
 
+  invalidIndex(idx) {
+    if (idx < 0 || idx >= this.length) throw 'Invalid Index';
+  }
   push(val) {
     const newNode = new Node(val);
     if (!this.head) {
@@ -102,9 +105,15 @@ class LinkedList {
   /** getAt(idx): get val at idx. */
 
   getAt(idx) {
-    if (idx < 0 || idx >= this.length) throw 'Invalid Index';
+    this.invalidIndex(idx)
     // The list is empty
     this.isEmpty()
+
+    // We are getting the last item in the list
+    if (idx === this.length - 1) {
+      return this.tail.val
+    }
+
     let currentNode = this.head;
     for (let i = 0; i < this.length; i++) {
       if (i === idx) return currentNode.val;
@@ -116,7 +125,24 @@ class LinkedList {
   /** setAt(idx, val): set val at idx to val */
 
   setAt(idx, val) {
+    this.invalidIndex(idx)
+    // The list is empty
+    this.isEmpty()
 
+    // We are setting the last item in the list
+    if (idx === this.length - 1) {
+      this.tail.val = val;
+      return
+    }
+
+    let currentNode = this.head;
+    for (let i = 0; i < this.length; i++) {
+      if (i === idx) {
+        currentNode.val = val;
+        return
+      }
+      currentNode = currentNode.next;
+    }
   }
 
   /** insertAt(idx, val): add node w/val before idx. */

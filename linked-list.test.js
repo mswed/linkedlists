@@ -85,3 +85,14 @@ describe("getAt", function() {
         expect(lst.getAt(1)).toBe(10);
     });
 });
+
+describe("setAt", function() {
+    it("sets val at index", function() {
+        let lst = new LinkedList([5, 10]);
+
+        expect(lst.setAt(0, 1));
+        expect(lst.setAt(1, 2));
+        expect(lst.head.val).toBe(1);
+        expect(lst.head.next.val).toBe(2);
+    });
+});
