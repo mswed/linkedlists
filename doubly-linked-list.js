@@ -1,15 +1,16 @@
 /** Node: node for a singly linked list. */
 
-class Node {
+class DoubleNode {
   constructor(val) {
     this.val = val;
     this.next = null;
+    this.previous = null;
   }
 }
 
 /** LinkedList: chained together nodes. */
 
-class LinkedList {
+class DoublyLinkedList {
   constructor(vals = []) {
     this.head = null;
     this.tail = null;
@@ -37,14 +38,50 @@ class LinkedList {
   invalidIndex(idx) {
     if (idx < 0 || idx > this.length -1) throw 'Invalid Index';
   }
+
+  search(idx) {
+    const midPoint = this.length / 2;
+    console.log('Mid point is', midPoint)
+    if (idx < midPoint) {
+      console.log('Searching forward')
+      return this.searchForward(idx);
+    } else {
+      console.log('Searching backward')
+      return this.searchBackward(idx);
+    }
+  }
+  searchForward(idx) {
+    let currentNode = this.head;
+    for (let i = 0; i < this.length; i++) {
+      if (i === idx) {
+        return currentNode
+      }
+      currentNode = currentNode.next;
+    }
+  }
+
+  searchBackward(idx) {
+    let currentNode = this.tail;
+    for (let i = this.length - 1; i >= 0; i--) {
+      console.log('Index is', i)
+      console.log('Current Node is', currentNode)
+      if (i === idx) {
+        return currentNode
+      }
+      currentNode = currentNode.previous;
+    }
+  }
   push(val) {
-    const newNode = new Node(val);
+    // Append to end of list
+    const newNode = new DoubleNode(val);
     if (!this.head) {
       this.head = newNode;
       this.tail = newNode;
     } else {
-      this.tail.next = newNode;
+      const currentTail = this.tail;
+      currentTail.next = newNode;
       this.tail = newNode;
+      this.tail.previous = currentTail;
     }
     this.length += 1;
   }
@@ -53,9 +90,12 @@ class LinkedList {
 
   unshift(val) {
     if (!this.head) return this.push(val); // if we have an empty list just push
-    const newNode = new Node(val);
-    newNode.next = this.head;
+    const newNode = new DoubleNode(val);
+    const currentHead = this.head;
+    newNode.next = currentHead;
+    currentHead.previous = newNode;
     this.head = newNode;
+
     this.length += 1;
 
   }
@@ -68,11 +108,7 @@ class LinkedList {
 
     if (this.isSingleItem()) {
     } else {
-      let currentNode = this.head;
-      while (currentNode.next.next) {
-        currentNode = currentNode.next;
-      }
-      this.tail = currentNode;
+      this.tail = this.tail.previous;
       this.tail.next = null;
     }
 
@@ -94,6 +130,7 @@ class LinkedList {
     } else {
       // Replace the head
       const newHead = this.head.next;
+      newHead.previous = null;
       this.head.next = null;
       this.head = newHead;
     }
@@ -114,11 +151,8 @@ class LinkedList {
       return this.tail.val
     }
 
-    let currentNode = this.head;
-    for (let i = 0; i < this.length; i++) {
-      if (i === idx) return currentNode.val;
-      currentNode = currentNode.next;
-    }
+    const foundNode = this.search(idx)
+    return foundNode.val
 
   }
 
@@ -135,14 +169,9 @@ class LinkedList {
       return
     }
 
-    let currentNode = this.head;
-    for (let i = 0; i < this.length; i++) {
-      if (i === idx) {
-        currentNode.val = val;
-        return
-      }
-      currentNode = currentNode.next;
-    }
+    const foundNode = this.search(idx);
+    foundNode.val = val;
+
   }
 
   /** insertAt(idx, val): add node w/val before idx. */
@@ -161,19 +190,13 @@ class LinkedList {
       this.push(val)
       return
     }
-    let newNode = new Node(val)
-    let currentNode = this.head;
-    let previousNode = null;
-    for (let i = 0; i < this.length; i++) {
-      if (i === idx) {
-        previousNode.next = newNode;
-        newNode.next = currentNode
-        this.length += 1;
-        return
-      }
-      previousNode = currentNode;
-      currentNode = currentNode.next;
-    }
+    console.log('Adding to the middle of the list at', idx)
+    let newNode = new DoubleNode(val)
+    const foundNode = this.search(idx);
+    console.log('Found node', foundNode)
+    foundNode.previous.next = newNode;
+    newNode.next = foundNode;
+    this.length += 1;
 
   }
 
@@ -197,18 +220,12 @@ class LinkedList {
       return
     }
 
-    let currentNode = this.head;
-    let previousNode = null;
-    for (let i = 0; i < this.length; i++) {
-      if (i === idx) {
-        previousNode.next = currentNode.next;
-        currentNode.next = null;
-        this.length -= 1;
-        return currentNode.val
-      }
-      previousNode = currentNode;
-      currentNode = currentNode.next;
-    }
+    const foundNode = this.search(idx);
+
+    foundNode.previous.next = foundNode.next;
+    foundNode.next = null;
+    this.length -= 1;
+    return foundNode.val
 
   }
 
@@ -228,5 +245,5 @@ class LinkedList {
   }
 }
 
-const trains = new LinkedList(['Engine', 'Passenger Car 1', 'Passenger Car 2', 'Caboose'])
+const doubleTrains = new DoublyLinkedList(['Engine', 'Passenger Car 1', 'Passenger Car 2', 'Caboose'])
 //module.exports = LinkedList;
