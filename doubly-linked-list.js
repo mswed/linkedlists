@@ -287,7 +287,7 @@ function sorter(a, b) {
     } else if (valB === null) {
       sortedList.push(valA)
     }
-    
+
     if (valA > valB) {
       sortedList.push(valB);
       sortedList.push(valA);
@@ -300,4 +300,4 @@ function sorter(a, b) {
   sortedList.traverse();
 }
 
-sorter(bList, aList)
+// sorter(bList, aList)

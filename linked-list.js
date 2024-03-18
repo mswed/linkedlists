@@ -4,6 +4,7 @@ class Node {
   constructor(val) {
     this.val = val;
     this.next = null;
+    this.visited = false;
   }
 }
 
@@ -226,7 +227,67 @@ class LinkedList {
 
     return total / this.length
   }
+
+  traverse() {
+    let currentNode = this.head;
+    while (currentNode) {
+      console.log(currentNode.val)
+      currentNode = currentNode.next;
+
+    }
+  }
+
+  asList() {
+    const classicList = [];
+    let currentNode = this.head;
+    console.log('Head is', this.head)
+    while (currentNode) {
+      classicList.push([currentNode.val, currentNode.next]);
+      currentNode = currentNode.next;
+
+    }
+    return classicList;
+
+  }
+  pivot(val) {
+    let currentNode = this.head;
+    let lastUnmoved = null;
+    while (!currentNode.visited) {
+      const nextNode = currentNode.next; // we backup the next node
+
+      if (currentNode.val >= val) {
+        // Move the node to the end
+        this.tail.next = currentNode;
+        this.tail = currentNode;
+        this.tail.next = null;
+        this.tail.visited = true;
+        if (lastUnmoved === null) {
+          // We never set a new head
+          this.head = nextNode; // the next node becomes the head
+          } else {
+          // We have an unmoved head
+          lastUnmoved.next = nextNode;
+        }
+      } else {
+        // We are keeping the node where it is record it as un moved
+        lastUnmoved = currentNode;
+      }
+
+      currentNode.visited = true;
+      if (nextNode != null) {
+        currentNode = nextNode
+
+      }
+    }
+
+  }
+
 }
 
 const trains = new LinkedList(['Engine', 'Passenger Car 1', 'Passenger Car 2', 'Caboose'])
-//module.exports = LinkedList;
+
+let ll = new LinkedList([7, 6, 2, 5, 3, 5, 9, 1, 1])
+ll.pivot(5)
+ll.traverse()
+
+
