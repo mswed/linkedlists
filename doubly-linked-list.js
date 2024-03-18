@@ -261,3 +261,43 @@ class DoublyLinkedList {
 
 const doubleTrains = new DoublyLinkedList(['Engine', 'Passenger Car 1', 'Passenger Car 2', 'Caboose'])
 //module.exports = LinkedList;
+
+
+const aList = new DoublyLinkedList([1, 3, 5, 7, 9, 11])
+const bList = new DoublyLinkedList([2, 4, 6, 8, 10, 12])
+
+function sorter(a, b) {
+  const sortedList = new DoublyLinkedList();
+  while (a.length > 0 || b.length > 0) {
+    let valA = null;
+    let valB = null;
+    try {
+      valA = a.shift();
+    } catch {
+
+    }
+
+    try {
+      valB = b.shift();
+    } catch {
+    }
+
+    if (valA === null) {
+      sortedList.push(valB)
+    } else if (valB === null) {
+      sortedList.push(valA)
+    }
+    
+    if (valA > valB) {
+      sortedList.push(valB);
+      sortedList.push(valA);
+    } else {
+      sortedList.push(valA);
+      sortedList.push(valB);
+    }
+  }
+
+  sortedList.traverse();
+}
+
+sorter(bList, aList)
