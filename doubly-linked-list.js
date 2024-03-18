@@ -39,14 +39,23 @@ class DoublyLinkedList {
     if (idx < 0 || idx > this.length -1) throw 'Invalid Index';
   }
 
+  reverse() {
+    let currentNode = this.tail;
+    while (currentNode) {
+      const newPrevious = currentNode.next;
+      currentNode.next = currentNode.previous;
+      currentNode.previous = newPrevious;
+      currentNode = currentNode.next;
+    }
+    const newHead = this.tail;
+    this.tail = this.head;
+    this.head = newHead;
+  }
   search(idx) {
     const midPoint = this.length / 2;
-    console.log('Mid point is', midPoint)
     if (idx < midPoint) {
-      console.log('Searching forward')
       return this.searchForward(idx);
     } else {
-      console.log('Searching backward')
       return this.searchBackward(idx);
     }
   }
@@ -63,12 +72,19 @@ class DoublyLinkedList {
   searchBackward(idx) {
     let currentNode = this.tail;
     for (let i = this.length - 1; i >= 0; i--) {
-      console.log('Index is', i)
-      console.log('Current Node is', currentNode)
       if (i === idx) {
         return currentNode
       }
       currentNode = currentNode.previous;
+    }
+  }
+
+  traverse() {
+    let currentNode = this.head;
+    while (currentNode) {
+      console.log(currentNode.val)
+      currentNode = currentNode.next;
+
     }
   }
   push(val) {
@@ -190,10 +206,8 @@ class DoublyLinkedList {
       this.push(val)
       return
     }
-    console.log('Adding to the middle of the list at', idx)
     let newNode = new DoubleNode(val)
     const foundNode = this.search(idx);
-    console.log('Found node', foundNode)
     foundNode.previous.next = newNode;
     newNode.next = foundNode;
     this.length += 1;
